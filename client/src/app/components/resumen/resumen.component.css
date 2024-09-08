@@ -135,23 +135,6 @@ body {
   background-color: #e5e5e5;
 }
 
-.button_descargar {
-  font-family: sans-serif;
-  padding: 8px 15px;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: auto;
-  position: relative;
-  margin-bottom: 20px;
-  background-color: #270d0a8e;
-  font-family: sans-serif;
-  font-weight: 600;
-  font-size: medium;
-  color: #fff2cc;
-}
-
 .dropdown {
   position: relative;
   display: inline-block;
@@ -182,9 +165,6 @@ body {
   display: block;
 }
 
-.dropdown:hover .button_descargar {
-  background-color: #00000094;
-}
 
 .filter-dropdown {
   position: relative;
@@ -302,4 +282,44 @@ body {
 .filter-dropdown input[type="date"]::-webkit-calendar-picker-indicator {
   color: #fff2cc;
   background-color: #270d0a8e;
+}
+
+.button_descargar {
+  position: relative;
+  font-family: sans-serif;
+  padding: 0.7em 1.4em;
+  font-size: 1.2em;
+  background-color: #8b2115;
+  border: none;
+  border-radius: 0.5em;
+  cursor: pointer;
+  color: #fff2cc;
+  font-weight: 600;
+  margin-right: 80px;
+  margin-bottom: 20px;
+  box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.button_descargar::before {
+  position: absolute;
+  content: '';
+  height: 0;
+  width: 0;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, rgba(33, 33, 33, 0) 0%, rgba(33, 33, 33, 0.349) 50%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
+  border-radius: 0 0 0.5em 0;
+  box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+.button_descargar:hover::before {
+  width: 1.6em;
+  height: 1.6em;
+}
+
+.button_descargar:active {
+  box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
+  transform: translate(0.1em, 0.1em);
 }

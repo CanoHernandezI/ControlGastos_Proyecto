@@ -10,7 +10,6 @@
                 <nav>
                     <ul>
                         <li class="left"><a routerLink="/inicio-usuario">Control de Gastos</a></li>
-                        <li class="right"><a routerLink="/servicios/add" routerLinkActive="active"><i class="fas fa-plus"></i> Crear Servicio</a></li>
                     </ul>
                 </nav>
             </header>
@@ -28,6 +27,10 @@
                         </a>
                     </li>
                 </div>
+                <a routerLink="/servicios/add" class="Btn">
+                    <i class="fas fa-plus"></i> 
+                    <div class="text">Agregar servicio</div>
+                </a>
                 <h1>Lista de servicios</h1>
                 <div class="white-container">
                     <table class="expenses-table">

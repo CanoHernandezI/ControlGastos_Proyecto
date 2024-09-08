@@ -73,7 +73,7 @@ body {
 
 .main-content {
     background-color: #f1edec;
-    background-image:url('/assets/FondoA.jpg') ;
+    background-image: url('/assets/FondoA.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -98,10 +98,26 @@ body {
     margin: 0 auto;
 }
 
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px; 
+}
+
 .main-content h1 {
     margin-top: 0;
-    text-align: center;
+    margin-bottom: 20px; 
+    text-align: left;
     color: #fff;
+    margin-right: 20px; 
+}
+
+.main-content .Btn {
+    margin-left: 1100px; 
+    margin-top: -40px; 
+    position: relative;
 }
 
 .expenses-table {
@@ -194,41 +210,6 @@ li:hover .tooltip {
     opacity: 1;
 }
 
-.tooltip {
-    visibility: hidden;
-    width: 120px;
-    background-color: #5b4e76;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%; 
-    left: 50%;
-    margin-left: -60px; 
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-family: sans-serif;
-    font-size: small;
-}
-
-.tooltip::after {
-    content: "";
-    position: absolute;
-    top: 100%; 
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #5b4e76 transparent transparent transparent;
-}
-
-li:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
-}
-
 @keyframes slideInRight {
     0% {
       transform: translateX(100%);
@@ -284,3 +265,59 @@ li:hover .tooltip {
 .text-green {
     color: rgb(57, 235, 57);
 }
+
+.Btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: width 0.3s, border-radius 0.3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: #30ab39;
+    padding-left: 12px; 
+    box-sizing: border-box; 
+    text-decoration: none;
+}
+
+.Btn i {
+    font-size: 1.2em; 
+    color: white;
+    margin-right: 10px; 
+    line-height: 1; 
+    vertical-align: middle; 
+    display: inline-block; 
+}
+
+.text {
+    position: absolute;
+    left: 45px; 
+    width: 0;
+    opacity: 0;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 600;
+    transition: width 0.3s, opacity 0.3s, padding-right 0.3s;
+    white-space: nowrap; 
+}
+
+.Btn:hover {
+    width: 190px; 
+    border-radius: 40px;
+}
+
+.Btn:hover .text {
+    opacity: 1;
+    width: 70%;
+    padding-right: 10px;
+}
+
+.Btn:active {
+    transform: translate(2px, 2px);
+}
+

@@ -44,16 +44,6 @@
                 <div class="floating-window">
                     <li class="left" *ngFor="let presupuesto of presupuestos">
                         <a>
-                            Presupuesto total: 
-                            <span [ngClass]="{'text-red': presupuesto.PresupuestoTotal < 0, 'text-green': presupuesto.PresupuestoTotal >= 0}">
-                                ${{ presupuesto.PresupuestoTotal }}
-                            </span>
-                        </a>
-                    </li>
-                </div>
-                <div class="floating-window">
-                    <li class="left" *ngFor="let presupuesto of presupuestos">
-                        <a>
                             Presupuesto actual: 
                             <span [ngClass]="{'text-red': presupuesto.PresupuestoActual < 0, 'text-green': presupuesto.PresupuestoActual >= 0}">
                                 ${{ presupuesto.PresupuestoActual }}
