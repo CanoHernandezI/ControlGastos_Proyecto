@@ -6,40 +6,24 @@
 <body>
     <div class="container">
         <header class="header">
-            <div class="title">
-                <h1>Bienvenido</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li class="left">
-                        <a routerLink="/inicio-usuario">Control de Gastos</a>
-                    </li>
-                    <li class="right">
-                        <a routerLink="/soporte-tecnico">
-                            <i class="fas fa-headset"></i>
-                            <span class="tooltip">Soporte Técnico</span>
+            <nav class="navbar">
+                <div class="navbar-container">
+                    <div class="logo">
+                        <a routerLink="/inicio-usuario">
+                            <span>CONTROL GASTOS</span>
                         </a>
-                    </li>
-                    <li class="right">
-                        <a routerLink="/resumen">
-                            <i class="fas fa-file-alt"></i>
-                            <span class="tooltip">Resumen</span>
-                        </a>
-                    </li>
-                    <li class="right">
-                        <a routerLink="/home">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span class="tooltip">Cerrar Sesión</span>
-                        </a>
-                    </li>
-                    <li class="right">
-                        <a routerLink="/usuario">
-                            <i class="fas fa-user"></i>
-                            Usuario
-                        </a>
-                    </li>
-                </ul>                
+                    </div>
+                    <ul class="nav-links">
+                        <!--<li><a routerLink="/soporte-tecnico">Soporte Tecnico</a></li>-->
+                        <li><a routerLink="/resumen">Resumen</a></li>
+                        <li><a routerLink="/home">Cerrar sesión</a></li>
+                        <li><a routerLink="/usuario">Usuario</a></li>
+                    </ul>
+                </div>
             </nav>
+            <div class="welcome-bar">
+                Bienvenido
+            </div>
             <div class="info-container">
                 <div class="floating-window">
                     <li class="left" *ngFor="let presupuesto of presupuestos">

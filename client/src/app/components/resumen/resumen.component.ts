@@ -20,7 +20,7 @@ export class ResumenComponent implements OnInit {
   ingresos: Ingreso[] = [];
   servicios: Servicio[] = [];
   resumen: any[] = [];
-  resumenOriginal: any[] = []; // Nueva propiedad para almacenar los datos originales
+  resumenOriginal: any[] = []; 
   IdUsuario: string | null = null;
 
   constructor(
@@ -116,7 +116,7 @@ export class ResumenComponent implements OnInit {
       }
     };
     
-    pdfMake.createPdf(pdfDefinition).download('ResumenGastos.pdf');
+    pdfMake.createPdf(pdfDefinition).download('ResumenMovimientos.pdf');
   }
 
   getAllData() {

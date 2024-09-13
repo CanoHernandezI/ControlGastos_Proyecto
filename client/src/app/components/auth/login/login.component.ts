@@ -13,6 +13,10 @@ export class LoginComponent implements OnInit {
   notificationMessage: string | null = null;
   passwordFieldType: string = 'password';
 
+  // Definir las propiedades 'username' y 'password'
+  username: string = '';
+  password: string = '';
+
   constructor(
     private usuarioService: UsuarioService, 
     private router: Router,

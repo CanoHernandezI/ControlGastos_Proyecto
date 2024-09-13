@@ -6,14 +6,20 @@
 <body>
     <div class="container">
         <header class="header">
-            <div class="title">
-                <h1>Registrar Gasto</h1>
+            <nav class="navbar">
+                <div class="navbar-container">
+                  <div class="logo">
+                    <a routerLink="/inicio-usuario">
+                      <span>CONTROL GASTOS</span>
+                    </a>
+                  </div>
+                  <ul class="nav-links">
+                  </ul>
+                </div>
+              </nav>
+              <div class="welcome-bar">
+                Registrar Gasto
             </div>
-            <nav>
-                <ul>
-                    <li class="left"><a href="/inicio-usuario">Control de Gastos</a></li>
-                </ul>
-            </nav>
         </header>
         <main class="main-content">
             <a routerLink="/gastos/list" class="Btn">
