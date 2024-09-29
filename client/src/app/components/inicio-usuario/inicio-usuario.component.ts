@@ -13,7 +13,7 @@ export class InicioUsuarioComponent implements OnInit, AfterViewInit {
   presupuestos: any = [];
   idUsuario: string | null = null;
 
-  initialPosition = { lat: 19.433668, lng: -99.115728 }; // Posición inicial de CDMX
+  initialPosition = { lat: 19.433668, lng: -99.115728 }; 
   center: google.maps.LatLngLiteral = this.initialPosition;
   zoom = 15;
 
