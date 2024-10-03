@@ -60,6 +60,14 @@ CREATE TABLE Gasto (
     FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario)
 );
 
+CREATE TABLE Ubicacion (
+    IdUbicacion INT PRIMARY KEY AUTO_INCREMENT,
+    IdUsuario INT NOT NULL,
+    Latitud DECIMAL(10, 8) NOT NULL,
+    Longitud DECIMAL(11, 8) NOT NULL,
+    FechaRegistro DATETIME NOT NULL,
+    FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario)
+);
 
 -- Trigger que actualiza el presupuesto cuando se crea un usuario
 
