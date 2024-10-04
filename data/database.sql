@@ -6,6 +6,7 @@ USE ControlGasto;
 
 CREATE TABLE Usuario (
     IdUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    TipoUsuario INT NOT NULL,
     Nombre VARCHAR(50) NOT NULL,
     ApPaterno VARCHAR(50) NOT NULL,
     ApMaterno VARCHAR(50),
@@ -13,7 +14,8 @@ CREATE TABLE Usuario (
     Correo VARCHAR(50) NOT NULL UNIQUE,
     FechaNacimiento VARCHAR(20) NOT NULL,
     Usuario CHAR(20) NOT NULL UNIQUE,
-    Contrasena VARCHAR(30) NOT NULL
+    Contrasena VARCHAR(30) NOT NULL,
+    CONSTRAINT chk_tipo_usuario CHECK (TipoUsuario IN (1, 2))
 );
 
 CREATE TABLE Presupuesto (
