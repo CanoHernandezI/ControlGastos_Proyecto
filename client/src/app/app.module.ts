@@ -43,8 +43,7 @@ registerLocaleData(localeEs, 'es');
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         FormsModule,
-        ReactiveFormsModule,
-    GoogleMapsModule], providers: [
+        ReactiveFormsModule, GoogleMapsModule], providers: [
         { provide: LOCALE_ID, useValue: 'es' },
         provideHttpClient(withFetch()),
         provideHttpClient(withInterceptorsFromDi())

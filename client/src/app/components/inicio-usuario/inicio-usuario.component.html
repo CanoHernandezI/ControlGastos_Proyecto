@@ -88,12 +88,6 @@
                             (mapMousemove)="move($event)">
                 </google-map>
                 <button class="locate-button" (click)="recenterMap()">Mi ubicación</button>
-                <div class="info-route">
-                    <h3>Lugares visitados</h3>
-                    <ul>
-                        <li *ngFor="let lugar of lugaresVisitados">{{ lugar.ubicacion }} - {{ lugar.hora }}</li>
-                    </ul>
-                </div>
             </section>
         </main>
     </div>
