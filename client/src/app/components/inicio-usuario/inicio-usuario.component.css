@@ -355,3 +355,33 @@ li:hover .tooltip {
   list-style-type: none;
   padding-left: 0;
 }
+
+.map-container {
+  height: 500px;
+  width: 100%;
+  position: relative;
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+}
+
+.locate-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 100;
+}
+
+.locate-button:hover {
+  background-color: #16a085;
+}
+

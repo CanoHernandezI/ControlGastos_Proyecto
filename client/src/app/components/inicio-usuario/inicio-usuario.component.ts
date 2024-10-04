@@ -1,35 +1,26 @@
-import { Component, OnInit, AfterViewInit, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { PresupuestosService } from '../../services/presupuestos.service';
 import { Router } from '@angular/router';
-import { GoogleMap } from '@angular/google-maps';
-import { HttpClient } from '@angular/common/http';
-import { UbicacionService } from '../../services/ubicacion.service'; // Asegúrate de que el servicio esté importado
+import * as mapboxgl from 'mapbox-gl';
 
 @Component({
   selector: 'app-inicio-usuario',
   templateUrl: './inicio-usuario.component.html',
   styleUrls: ['./inicio-usuario.component.css']
 })
-export class InicioUsuarioComponent implements OnInit, AfterViewInit {
+export class InicioUsuarioComponent implements OnInit {
   presupuestos: any = [];
   idUsuario: string | null = null;
-  lugaresVisitados: { ubicacion: string, hora: string }[] = [];
-  
-  initialPosition = { lat: 19.433668, lng: -99.115728 };
-  center: google.maps.LatLngLiteral = this.initialPosition;
-  zoom = 15;
-
-  @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
-  markers: google.maps.Marker[] = [];
-  historialUbicaciones: any[] = [];
+  map!: mapboxgl.Map;
+  marker!: mapboxgl.Marker;
+  userCoordinates: [number, number][] = []; // Array para almacenar las coordenadas de la ruta
+  route!: mapboxgl.Source; // Fuente de datos para la ruta
 
   constructor(
     private presupuestosService: PresupuestosService,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private http: HttpClient,
-    private ubicacionService: UbicacionService // Agregado el servicio de ubicación
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
@@ -37,9 +28,7 @@ export class InicioUsuarioComponent implements OnInit, AfterViewInit {
       this.idUsuario = localStorage.getItem('IdUsuario');
       if (this.idUsuario) {
         this.loadPresupuestos();
-        this.trackLocation();
-        this.getHistorialUbicacion();
-        this.getLugaresVisitados();
+        this.initializeMap();
       } else {
         console.error('Usuario no autenticado');
         this.router.navigate(['/login']);
@@ -50,148 +39,139 @@ export class InicioUsuarioComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      window.addEventListener('load', () => {
-        this.getCurrentLocation();
-      });
-    }
-  }
-
   loadPresupuestos() {
     if (this.idUsuario) {
       this.presupuestosService.getPresupuestos(this.idUsuario).subscribe(
         (resp: any) => {
           this.presupuestos = resp;
         },
-        (err) => console.log(err)
+        err => console.log(err)
       );
     }
   }
 
-  getCurrentLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          this.center = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          this.initializeMap();
-
-          const hora = new Date().toLocaleTimeString();
-          this.addLugarVisitado(`${this.center.lat}, ${this.center.lng}`, hora);
-        },
-        (error) => {
-          console.error('Error obteniendo la ubicación: ', error);
-        }
-      );
-    } else {
-      console.warn('Geolocalización no es soportada por este navegador.');
-    }
-  }
-
-  initializeMap() {
-    if (this.map?.googleMap) {
-      this.addMarker(this.center);
-    } else {
-      console.error('Mapa no está inicializado.');
-    }
-  }
-
-  addMarker(location: google.maps.LatLngLiteral) {
-    this.clearMarkers();
-
-    const marker = new google.maps.Marker({
-      position: location,
-      map: this.map.googleMap!,
-      title: 'Estoy aquí'
+  // Inicializar el mapa con el accessToken incluido en las opciones
+  initializeMap(): void {
+    this.map = new mapboxgl.Map({
+      accessToken: 'pk.eyJ1IjoiaXNhYWNjYW5vaCIsImEiOiJjbTF1MW40djEwOG91MmlvbDVvM2pudDNkIn0.HwWvhLZXDgZCW4Sa3WDYmA', // Incluye tu API Key de Mapbox aquí
+      container: 'map', // El id del div en el HTML donde se cargará el mapa
+      style: 'mapbox://styles/mapbox/streets-v11', // Estilo del mapa
+      center: [-74.5, 40], // Coordenadas iniciales (longitud, latitud)
+      zoom: 9 // Nivel de zoom inicial
     });
 
-    this.markers.push(marker);
+    // Añadir la fuente para la ruta
+    this.map.on('load', () => {
+      this.map.addSource('route', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: this.userCoordinates
+          }
+        }
+      });
+
+      // Añadir una capa visual para la ruta
+      this.map.addLayer({
+        id: 'route-layer',
+        type: 'line',
+        source: 'route',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': '#ff0000', // Color de la línea
+          'line-width': 4 // Grosor de la línea
+        }
+      });
+
+      this.trackUserLocation(); // Iniciar el seguimiento de la ubicación
+    });
   }
 
-  clearMarkers() {
-    this.markers.forEach((marker) => marker.setMap(null));
-    this.markers = [];
-  }
-
-  trackLocation() {
+  trackUserLocation(): void {
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition((position) => {
-        const latitud = position.coords.latitude;
-        const longitud = position.coords.longitude;
-
-        if (this.idUsuario) {
-          // Utiliza el servicio de ubicación para almacenar la ubicación
-          this.ubicacionService.almacenarUbicacion({
-            idUsuario: this.idUsuario,
-            latitud: latitud,
-            longitud: longitud,
-            fechaRegistro: new Date().toISOString()
-          }).subscribe({
-            next: (data) => {
-              console.log('Ubicación almacenada correctamente:', data);
-            },
-            error: (error) => {
-              console.error('Error al almacenar la ubicación:', error);
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const lng = position.coords.longitude;
+          const lat = position.coords.latitude;
+      
+          this.userCoordinates.push([lng, lat]);
+          
+          (this.map.getSource('route') as mapboxgl.GeoJSONSource).setData({
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'LineString',
+              coordinates: this.userCoordinates
             }
           });
+      
+          this.map.flyTo({
+            center: [lng, lat],
+            essential: true,
+            zoom: 15
+          });
+      
+          if (!this.marker) {
+            this.marker = new mapboxgl.Marker()
+              .setLngLat([lng, lat])
+              .addTo(this.map);
+          } else {
+            this.marker.setLngLat([lng, lat]);
+          }
+        },
+        (error) => {
+          if (error.code === 3) {
+            console.error('Tiempo de espera excedido para obtener la ubicación.');
+          } else {
+            console.error('Error al obtener la ubicación:', error);
+          }
+        },
+        {
+          enableHighAccuracy: false, // Menor precisión
+          timeout: 30000, // Tiempo máximo de espera aumentado a 30 segundos
+          maximumAge: 0
         }
+      );      
+    } else {
+      alert('Geolocalización no soportada por tu navegador.');
+    }
+  }
+
+  // Función para obtener la ubicación del usuario
+  getUserLocation(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lng = position.coords.longitude;
+        const lat = position.coords.latitude;
+
+        // Centramos el mapa en la ubicación del usuario
+        this.map.flyTo({
+          center: [lng, lat],
+          essential: true,
+          zoom: 15
+        });
+
+        // Si ya hay un marcador, lo quitamos
+        if (this.marker) {
+          this.marker.remove();
+        }
+
+        // Colocamos un nuevo marcador en la ubicación del usuario
+        this.marker = new mapboxgl.Marker()
+          .setLngLat([lng, lat])
+          .addTo(this.map);
+      }, () => {
+        alert('No se pudo obtener tu ubicación');
       });
     } else {
-      console.log("La geolocalización no es compatible con este navegador.");
+      alert('Geolocalización no soportada por el navegador');
     }
   }
 
-  getHistorialUbicacion() {
-    if (this.idUsuario) {
-      // Utiliza el servicio de ubicación para obtener el historial
-      this.ubicacionService.obtenerHistorialUbicacion(this.idUsuario).subscribe({
-        next: (data: any) => {
-          this.historialUbicaciones = data;
-          console.log('Historial de ubicaciones:', this.historialUbicaciones);
-        },
-        error: (error) => {
-          console.error('Error al obtener historial de ubicaciones:', error);
-        }
-      });
-    }
-  }
-
-  addLugarVisitado(ubicacion: string, hora: string): void {
-    const lugarConHora = { ubicacion: ubicacion, hora: hora };
-    this.lugaresVisitados.push(lugarConHora);
-    localStorage.setItem('lugaresVisitados', JSON.stringify(this.lugaresVisitados));
-  }
-
-  getLugaresVisitados(): void {
-    const lugares = localStorage.getItem('lugaresVisitados');
-    if (lugares) {
-      this.lugaresVisitados = JSON.parse(lugares);
-    }
-  }
-
-  // Nueva función para mover el mapa al hacer clic
-  moveMap(event: google.maps.MapMouseEvent) {
-    if (event.latLng) {
-      this.center = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng()
-      };
-      this.addMarker(this.center);
-    }
-  }
-
-  // Nueva función para manejar el movimiento del ratón sobre el mapa
-  move(event: google.maps.MapMouseEvent) {
-    if (event.latLng) {
-      console.log(`Movimiento del ratón en: ${event.latLng.lat()}, ${event.latLng.lng()}`);
-    }
-  }
-
-  // Nueva función para recentrar el mapa en la ubicación actual
-  recenterMap() {
-    this.getCurrentLocation();
-  }
 }
