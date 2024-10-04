@@ -24,8 +24,6 @@ export class InicioUsuarioComponent implements OnInit, AfterViewInit {
     private presupuestosService: PresupuestosService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private http: HttpClient,
-    private ubicacionService: UbicacionService // Agregado el servicio de ubicación
   ) {}
 
   ngOnInit() {
@@ -33,9 +31,6 @@ export class InicioUsuarioComponent implements OnInit, AfterViewInit {
       this.idUsuario = localStorage.getItem('IdUsuario');
       if (this.idUsuario) {
         this.loadPresupuestos();
-        this.trackLocation();
-        this.getHistorialUbicacion();
-        this.getLugaresVisitados();
       } else {
         console.error('Usuario no autenticado');
         this.router.navigate(['/login']);
