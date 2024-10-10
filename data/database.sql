@@ -17,8 +17,6 @@ CREATE TABLE Usuario (
     Usuario CHAR(20) NOT NULL UNIQUE,
     Contrasena VARCHAR(30) NOT NULL,
     CONSTRAINT chk_tipo_usuario CHECK (TipoUsuario IN (1, 2))
-    Contrasena VARCHAR(30) NOT NULL,
-    CONSTRAINT chk_tipo_usuario CHECK (TipoUsuario IN (1, 2))
 );
 
 CREATE TABLE Presupuesto (
