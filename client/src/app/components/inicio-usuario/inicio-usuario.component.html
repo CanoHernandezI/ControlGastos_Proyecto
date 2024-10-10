@@ -34,8 +34,8 @@
                         </a>
                     </li>
                 </div>
-            </div>                                                        
-        </header>       
+            </div>
+        </header>
         <main class="main-content">
             <section class="gastos">
                 <div class="card">
@@ -78,17 +78,10 @@
                     </div>
                 </div>
             </section>
-
-            <section class="mapa">
-                <google-map height="450px"
-                            width="1000px"
-                            [center]="center"
-                            [zoom]="zoom"
-                            (mapClick)="moveMap($event)"
-                            (mapMousemove)="move($event)">
-                </google-map>
-                <button class="locate-button" (click)="recenterMap()">Mi ubicación</button>
-            </section>
+            <div class="map-container">
+                <div id="map" class="map"></div>
+            </div>
+            <button class="locate-button" (click)="getUserLocation()">Mostrar mi ubicación</button>
         </main>
     </div>
 </body>
