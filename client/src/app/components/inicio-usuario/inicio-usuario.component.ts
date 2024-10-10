@@ -13,6 +13,7 @@ export class InicioUsuarioComponent implements OnInit {
   presupuestos: any = [];
   idUsuario: string | null = null;
   tipoUsuario: string | null = null;  //Para poder validar si el usuario es administrador o usuario
+  rolUsuario: string | null = null;
   map!: mapboxgl.Map;
   marker!: mapboxgl.Marker;
   userCoordinates: [number, number][] = []; // Array para almacenar las coordenadas de la ruta
@@ -28,10 +29,16 @@ export class InicioUsuarioComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.idUsuario = localStorage.getItem('IdUsuario');
       this.tipoUsuario = localStorage.getItem('TipoUsuario');  //Le damos valor a esta varaible con el tipo de usuario
-
+      if(this.tipoUsuario.includes('1')){
+        this.rolUsuario = 'Administrador';
+      } else {
+          this.rolUsuario = 'Otro rol';
+      }
       if (this.idUsuario) {
         this.loadPresupuestos();
-        this.initializeMap();
+        if (this.rolUsuario == "Administrador"){
+          this.initializeMap();
+        }
       } else {
         console.error('Usuario no autenticado');
         this.router.navigate(['/login']);
