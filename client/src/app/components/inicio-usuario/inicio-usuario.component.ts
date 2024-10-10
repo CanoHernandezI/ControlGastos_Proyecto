@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, AfterViewInit  } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { PresupuestosService } from '../../services/presupuestos.service';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ import * as mapboxgl from 'mapbox-gl';
 export class InicioUsuarioComponent implements OnInit {
   presupuestos: any = [];
   idUsuario: string | null = null;
+  tipoUsuario: string | null = null;  //Para poder validar si el usuario es administrador o usuario
   map!: mapboxgl.Map;
   marker!: mapboxgl.Marker;
   userCoordinates: [number, number][] = []; // Array para almacenar las coordenadas de la ruta
@@ -26,6 +27,8 @@ export class InicioUsuarioComponent implements OnInit {
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.idUsuario = localStorage.getItem('IdUsuario');
+      this.tipoUsuario = localStorage.getItem('TipoUsuario');  //Le damos valor a esta varaible con el tipo de usuario
+
       if (this.idUsuario) {
         this.loadPresupuestos();
         this.initializeMap();

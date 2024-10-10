@@ -6,7 +6,7 @@ USE ControlGasto;
 
 CREATE TABLE Usuario (
     IdUsuario INT PRIMARY KEY AUTO_INCREMENT,
-    TipoUsuario INT NOT NULL,
+    TipoUsuario INT NOT NULL CHECK (TipoUsuario IN (1, 2)),
     GrupoUsuario INT NOT NULL,
     Nombre VARCHAR(50) NOT NULL,
     ApPaterno VARCHAR(50) NOT NULL,

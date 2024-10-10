@@ -78,10 +78,10 @@
                     </div>
                 </div>
             </section>
-            <div class="map-container">
+            <div *ngFor="tipoUsuario == '1'" class="map-container" >
                 <div id="map" class="map"></div>
+                <button class="locate-button" (click)="getUserLocation()">Mostrar mi ubicación</button>
             </div>
-            <button class="locate-button" (click)="getUserLocation()">Mostrar mi ubicación</button>
         </main>
     </div>
 </body>

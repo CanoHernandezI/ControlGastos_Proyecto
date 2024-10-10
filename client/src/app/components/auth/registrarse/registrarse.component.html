@@ -82,6 +82,25 @@
                             </div>
                         </div>
                         <div>
+                            <label for="tipoUsuario">Tipo de usuario</label>
+                            <select id="tipoUsuario" name="tipoUsuario" required [(ngModel)]="usuario.TipoUsuario">
+                                <option value="1">Administrador (usuarios unicos, o que gestionarán cuentas de otros usuarios)</option>
+                                <option value="2">Usuario básico</option>
+                            </select>
+                            <div class="error-message" *ngIf="errorMessages['Usuario']">
+                                <i class="fas fa-exclamation-circle"></i> {{ errorMessages['Usuario'] }}
+                            </div>
+                        </div>                        
+                        <div>
+                            <label for="usuario">Identificador de grupo de usuarios</label>
+                            <input type="text" id="usuario" name="usuario" placeholder="Ignorar si eres usuario unico o primerizo" required [(ngModel)]="usuario.GrupoUsuario">
+                            <div class="error-message" *ngIf="errorMessages['GrupoUsuario']">
+                                <i class="fas fa-exclamation-circle"></i> {{ errorMessages['GrupoUsuario'] }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
                             <label for="contrasena">Crear Contraseña</label>
                             <input type="password" id="contrasena" name="contrasena" placeholder="Ingresa una contraseña" required [(ngModel)]="usuario.Contrasena" [type]="showPassword ? 'text' : 'password'">
                             <div class="eye-icon-container">
