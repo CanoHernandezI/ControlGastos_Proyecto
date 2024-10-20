@@ -21,6 +21,7 @@ import { UsuarioComponent } from './components/usuario/usuario.component';
 import { ResumenComponent } from './components/resumen/resumen.component';
 import { SoporteTecnicoComponent } from './components/soporte-tecnico/soporte-tecnico.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { FinanzasComponent } from './components/finanzas/finanzas.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -38,7 +39,8 @@ registerLocaleData(localeEs, 'es');
         ServicioListComponent,
         UsuarioComponent,
         ResumenComponent,
-        SoporteTecnicoComponent
+        SoporteTecnicoComponent,
+        FinanzasComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
